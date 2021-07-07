@@ -220,7 +220,7 @@ extension ArtsNewsViewController : UITableViewDataSource, UITableViewDelegate {
         let cell = tableView.dequeueReusableCell(withIdentifier: K.cellIdentifier) as! NewsArticleTableViewCell
         cell.titleLabel.text = newsData.title
         cell.abstractLabel.text = newsData.description
-        cell.articleImageView.downloadFrom(link: newsData.imageUrl, contentMode: UIView.ContentMode.scaleToFill)
+        cell.articleImageView.downloadFrom(link: newsData.imageUrl, contentMode: UIView.ContentMode.scaleAspectFill)
         return cell
         
     }
