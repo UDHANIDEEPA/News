@@ -20,14 +20,12 @@ class ArtsNewsViewController: UIViewController {
     var newsViewModel = NewsViewModel()
     
     var isSearching = false
-    
     //MARK : View Life Cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        self.activityIndicator.startAnimating()
-        
+        self.startActivityIndicator()
         self.newsTableView.delegate = self
         self.newsTableView.dataSource = self
         
@@ -90,22 +88,28 @@ class ArtsNewsViewController: UIViewController {
         carouselPageControl.numberOfPages = newsViewModel.getNumberOfItemsInCarousel()
         carouselPageControl.currentPage = 0
     }
+    
+    //MARK: Other functions
+    
+    func startActivityIndicator(){
+        self.activityIndicator.isHidden = false
+        self.view.bringSubviewToFront(self.activityIndicator)
+        self.activityIndicator.startAnimating()
+    }
 }
 
+//MARK: Searchbardelegate methods
 extension ArtsNewsViewController : UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         
         self.searchBar.endEditing(true)
-        self.activityIndicator.isHidden = false
-        self.activityIndicator.startAnimating()
-        
+        self.startActivityIndicator()
         if(self.searchBar.text?.isEmpty == true && self.isSearching == true){
             self.fetchNewsData()
         } else {
             newsViewModel.fetchSearchNewsData (keyword : searchBar.text ?? "", newsType: "arts", completionBlock: { (_) in
                 DispatchQueue.main.async { [weak self] in
                     self?.isSearching = true
-                    
                     self?.newsTableView.reloadData()
                     self?.activityIndicator.stopAnimating()
                     
@@ -117,6 +121,7 @@ extension ArtsNewsViewController : UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         if(self.searchBar.text?.isEmpty == true){
             if(isSearching == true){
+                self.searchBar.endEditing(true)
                 self.fetchNewsData()
             }else {
                 self.searchBar.endEditing(true)
@@ -126,14 +131,12 @@ extension ArtsNewsViewController : UISearchBarDelegate {
     }
     
     func fetchNewsData() {
-        self.activityIndicator.isHidden = false
-        self.activityIndicator.startAnimating()
-        isSearching = false
+        self.startActivityIndicator()
         newsViewModel.fetchNewsData(newsType: "arts", completionBlock: { (_) in
             DispatchQueue.main.async { [weak self] in
+                self?.isSearching = false
                 self?.newsTableView.reloadData()
                 self?.activityIndicator.stopAnimating()
-                
             }
         })
     }

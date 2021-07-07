@@ -39,6 +39,8 @@ class CarouselCell: UICollectionViewCell {
     }
     
     fileprivate func resetCell() {
+        self.activityIndicator.isHidden = false
+        self.bringSubviewToFront(activityIndicator)
         activityIndicator.startAnimating()
         imageView.image = nil
     }

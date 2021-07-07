@@ -29,10 +29,8 @@ class APIHandler :  NSObject {
             URLSession.shared.dataTask(with: unwrappedUrl, completionHandler: { (data, response, error) in
                 
                 if data != nil{
-                    
                     let string1 = String(data: data!, encoding: String.Encoding.utf8) ?? "Data could not be printed"
                     print(string1)
-                    //                    let jsonDecoder = JSONDecoder()
                     let decoder = JSONDecoder()
                     do {
                         if(!searching) {
