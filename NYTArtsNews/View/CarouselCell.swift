@@ -45,7 +45,6 @@ class CarouselCell: UICollectionViewCell {
         imageView.image = nil
     }
     
-    
     fileprivate func modelDownloadImage() {
         ImageDownloader.downloadImage(imageUrl: model?.imageUrl ?? "") { (downloadedImage) in
             self.model?.image = downloadedImage
